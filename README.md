@@ -1,8 +1,37 @@
 # ml-demo
 
-This is for encoding image and processing image labels.
+The first and typically most arduous step of Machine Learning is pre-processing. This demo demonstrates how to encode an image with associated image labels as part of pre-processing in ML.
+
+The dataset is a collection of images and their associated labels retrieved from https://github.com/Charmve/Surface-Defect-Detection in the `DeepPCB/PCBData` directory. The dataset contains images of printed circuit boards (PCBs) with various defects, such as scratches, dents, and other surface imperfections. The goal is to train a machine learning model to detect these defects in new images.
+
+Take for example the following images from the `DeepPCB/PCBData/group00041/00041` directory:
+
+[Correct Circuit Board](./assets/images/00041000_temp.jpg)
+
+
+The images are stored in a directory structure, and the labels are stored in text files. Each image has a corresponding text file that contains the labels for that image.
+
+The labels are in the form of bounding boxes, which are used to draw boxes around the objects in the image. The labels are in the format `x_min y_min x_max y_max label`, where `x_min` and `y_min` are the coordinates of the top-left corner of the bounding box, `x_max` and `y_max` are the coordinates of the bottom-right corner of the bounding box, and `label` is the class label for the object - in the case of this demo, this is a defect classification dataset.
 
 txt files contains bounded box that are coordinates that are used to draw a box around the object in the image - this is a defect classification dataset.
+
+
+```text
+466 441 493 470 3
+454 300 493 396 2
+331 248 364 283 4
+221 314 253 350 4
+151 149 182 175 5
+492 28 525 55 6
+424 24 461 53 6
+250 341 278 370 6
+539 259 592 316 1
+89 469 127 497 5
+```
+
+> First four coordinates are `x min` `y min` `x max` `y max` and last number is the type of defect. For example, disconnect defect, dot defect, etc.
+
+
 
 Notebook has raw images and scattered around txt files - how do we link the image to the txt file?
 
@@ -17,20 +46,7 @@ Image processing + image training
 Add ~30 - 40 lines of code to add 
 
 
-First four coordinates are `x min` `y min` `x max` `y max` and last number is the type of defect. For example, disconnect defect, dot defect, etc.
 
-```text
-466 441 493 470 3
-454 300 493 396 2
-331 248 364 283 4
-221 314 253 350 4
-151 149 182 175 5
-492 28 525 55 6
-424 24 461 53 6
-250 341 278 370 6
-539 259 592 316 1
-89 469 127 497 5
-```
 
 ```shell
 conda install snowflake-ml-python
