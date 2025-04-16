@@ -6,7 +6,9 @@ The dataset is a collection of images and their associated labels retrieved from
 
 Take for example the following images from the `DeepPCB/PCBData/group00041/00041` directory:
 
-[Correct Circuit Board](./assets/images/00041000_temp.jpg)
+![Correct Image](https://github.com/Charmve/Surface-Defect-Detection/blob/master/DeepPCB/PCBData/group00041/00041/00041000_temp.jpg)
+
+![Defective Image](https://github.com/Charmve/Surface-Defect-Detection/blob/master/DeepPCB/PCBData/group00041/00041/00041000_test.jpg)
 
 
 The images are stored in a directory structure, and the labels are stored in text files. Each image has a corresponding text file that contains the labels for that image.
