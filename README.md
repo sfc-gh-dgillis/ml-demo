@@ -10,6 +10,8 @@ Take for example the following images from the `DeepPCB/PCBData/group00041/00041
 
 ![Correct Image](https://github.com/Charmve/Surface-Defect-Detection/blob/master/DeepPCB/PCBData/group00041/00041/00041000_temp.jpg)
 
+------
+
 ## A defective image of the same PCB with defects:
 
 ![Defective Image](https://github.com/Charmve/Surface-Defect-Detection/blob/master/DeepPCB/PCBData/group00041/00041/00041000_test.jpg)
