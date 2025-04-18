@@ -31,7 +31,12 @@ CREATE COMPUTE POOL IF NOT EXISTS demo_compute_pool
   MAX_NODES = 1
   INSTANCE_FAMILY = GPU_NV_S
   INITIALLY_SUSPENDED =  TRUE
+       -- add auto suspend...
 COMMENT = 'Compute pool for demo database, particularly for ML image processing demo';
+
+-- TODO
+-- schedule training on compute pool that is not associated
+-- with the notebook you're running on
 
 -- grants to the demo_rw access role
 GRANT USAGE ON DATABASE st_db TO ROLE demo_rw;
