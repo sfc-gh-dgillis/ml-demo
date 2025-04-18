@@ -38,9 +38,9 @@ The corresponding text file found [here](https://github.com/Charmve/Surface-Defe
 
 The following steps will be performed to setup database objects and load the images and their associated labels into a Snowflake stage:
 
-### Step 0 - Prerequisites
+### Step 1 Prerequisites
 
-#### Download the Dataset by cloning the repo
+#### Download the Dataset by cloning the `Charmve/Surface-Defect-Detection` repo
 
 ```shell
 (base) ~/Documents/dev/github git:[main]
@@ -55,7 +55,7 @@ Resolving deltas: 100% (54548/54548), done.
 Updating files: 100% (62675/62675), done.
 ```
 
-Should look like this:
+The directory you need to reference with image and text files should be similar to the following (note the `PCBData` directory):
 
 ```shell
 (base) ~/Documents/dev/github/Surface-Defect-Detection/DeepPCB/PCBData git:[master]
@@ -64,17 +64,27 @@ group00041      group12100      group13000      group44000      group77000      
 group12000      group12300      group20085      group50600      group90100      test.txt
 ```
 
-### Step 1 - Create Database Objects and 
+### Step 2 Create Database Objects
 
-Run the `image-label-processing-example-db-objects.sql` script to create the Database, Schema, Stages, Compute Pool, roles and grants required to run the demo. The script will create the following objects:
+Run the `image-label-processing-example-db-objects.sql` script found in the repo root to create the Database, Schema, Stages, Compute Pool, roles and grants required to run the demo. The script will create the following objects:
 
-TODO
+- An access role named `demo_rw`
+- A functional role named `demo_data_engineer`
+- A database named `st_db`
+- A schema named `st_db.st_schema`
+- A stage named `st_db.st_schema.data_stage_ray/images/`
+- A stage named `st_db.st_schema.data_stage_ray/labels/`
+- A compute pool named `demo_compute_pool`
+- Grants required for the above objects
 
-### Step 2 - Load Image and Label files to Snowflake Stage
+### Step 3 Install the required Python packages
 
-In order to load the images and their associated labels into a Snowflake stage where they can be processed, we have provided a Python script `load_files.py` which  will read the images and their associated labels from the local `DeepPCB/PCBData` directory.
+The demo requires the following Python packages to be installed:
 
-The script requires some Python packages to be installed. Run the following commands to install the required packages:
+- `snowflake-ml-python`
+- `snowflake-snowpark-python`
+
+Using the `conda` package manager, you can install the required packages using the following commands:
 
 #### snowflake-ml-python
 
@@ -91,31 +101,7 @@ Solving environment: done
   added / updated specs:
     - snowflake-ml-python
 
-
-The following packages will be downloaded:
-
-    package                    |            build
-    ---------------------------|-----------------
-    _py-xgboost-mutex-2.0      |            cpu_0          13 KB
-    absl-py-1.4.0              |  py312hca03da5_0         218 KB
-    aiobotocore-2.19.0         |  py312hca03da5_0         161 KB
-    aiohappyeyeballs-2.4.4     |  py312hca03da5_0          28 KB
-    ...
-    yarl-1.18.0                |  py312h80987f9_0         147 KB
-    ------------------------------------------------------------
-                                           Total:       116.1 MB
-
-The following NEW packages will be INSTALLED:
-
-  _py-xgboost-mutex  pkgs/main/osx-arm64::_py-xgboost-mutex-2.0-cpu_0 
-  absl-py            pkgs/main/osx-arm64::absl-py-1.4.0-py312hca03da5_0 
-  aiobotocore        pkgs/main/osx-arm64::aiobotocore-2.19.0-py312hca03da5_0 
-  aiohappyeyeballs   pkgs/main/osx-arm64::aiohappyeyeballs-2.4.4-py312hca03da5_0 
-  aiohttp            pkgs/main/osx-arm64::aiohttp-3.11.10-py312h80987f9_0 
-  aioitertools       pkgs/main/noarch::aioitertools-0.7.1-pyhd3eb1b0_0 
-  aiosignal          pkgs/main/noarch::aiosignal-1.2.0-pyhd3eb1b0_0 
-  ...
-  yarl               pkgs/main/osx-arm64::yarl-1.18.0-py312h80987f9_0 
+...
 
 The following packages will be DOWNGRADED:
 
@@ -146,14 +132,7 @@ Solving environment: done
   added / updated specs:
     - snowflake-snowpark-python
 
-
-The following packages will be downloaded:
-
-    package                    |            build
-    ---------------------------|-----------------
-    snowflake-snowpark-python-1.30.0|py312hca03da5_100         2.8 MB
-    ------------------------------------------------------------
-                                           Total:         2.8 MB
+...
 
 The following packages will be UPDATED:
 
@@ -169,6 +148,20 @@ Preparing transaction: done
 Verifying transaction: done
 Executing transaction: done
 ```
+
+### Step 4 Load Image and Label files to Snowflake Stage
+
+In order to load the images and their associated labels into a Snowflake stage where they can be processed, we have provided a Python script `load_files.py` which  will read the images and their associated labels from the local `DeepPCB/PCBData` directory where you put `Charmve/Surface-Defect-Detection` from [Step 1](#step-1-prerequisites) and uploads them to designated Snowflake stages for further processing.
+
+Key Steps:
+
+**Snowflake Session Setup:** Establishes a connection to Snowflake using credentials from a configuration file (setup via Snowflake CLI or SnowSQL).
+
+**File Upload Function:** Defines a function to upload files to specific Snowflake stages (`@data_stage_ray/images/` for images and `@data_stage_ray/labels/` for labels).
+
+**Directory Traversal:** Iterates through the directory structure to locate image files (_test.jpg) and their corresponding label files in a _not subfolder.
+
+**File Upload:** Uploads the identified image and label files to the appropriate Snowflake stages.
 
 #### Update `load_files.py` with your Snowflake credentials
 
@@ -186,13 +179,13 @@ Run the script:
 python ./load_files.py
 ```
 
-### Step 3 - Process Images and Labels
+### Step 5 Process Images and Labels
 
 Run steps in the Notebook on Snowsight. This notebook extracts image to a snowflake table as well as the data from the text file. Creates table maps the image to the text file.
 
 Allows for batch processing of images and text files.
 
-### Step 4 - Train Model
+### Step 6 Train Model
 
 TODO - see below
 
