@@ -72,7 +72,9 @@ def process_and_upload_files(base_dir, image_stage, label_stage):
 
 
 # Define local directory where the PCB dataset was downloaded
-base_directory = "/Users/dgillis/Documents/dev/github/Surface-Defect-Detection/DeepPCB/PCBData"  # ensure this notebook is in the same directory as the PCBData folder
+base_directory = "/Users/dgillis/Documents/dev/github/Surface-Defect-Detection/DeepPCB/PCBData"
+
+# Define Snowflake stage paths
 image_stage_path = "@data_stage_ray/images/"
 label_stage_path = "@data_stage_ray/labels/"
 
